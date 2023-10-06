@@ -4486,6 +4486,7 @@ __metadata:
     eslint-config-next: ~13.1.6
     eslint-config-prettier: ~8.5.0
     eslint-plugin-prettier: ~4.2.1
+    ethers: "https://github.com/Railgun-Community/ethers.js"
     next: ~13.1.6
     nextjs-progressbar: ~0.0.16
     postcss: ~8.4.16
@@ -10964,7 +10965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@github:Railgun-Community/ethers.js#v6.7.6":
+"ethers@github:Railgun-Community/ethers.js#v6.7.6, ethers@https://github.com/Railgun-Community/ethers.js":
   version: 6.7.6
   resolution: "ethers@https://github.com/Railgun-Community/ethers.js.git#commit=8eee17db07ce57bcc453855d6aa9b945eb47dfa4"
   dependencies:
