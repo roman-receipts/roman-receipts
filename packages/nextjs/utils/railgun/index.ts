@@ -67,11 +67,15 @@ const setEngineLoggers = () => {
   setLoggers(logMessage, logError);
 };
 
-// App launch
-try {
-  initializeEngine();
-  setEngineLoggers();
-  await loadEngineProvider();
-} catch (err) {
-  // Handle err
-}
+const launchWallet = async () => {
+  // App launch
+  try {
+    initializeEngine();
+    setEngineLoggers();
+    await loadEngineProvider();
+  } catch (err) {
+    // Handle err
+  }
+};
+
+export default launchWallet;

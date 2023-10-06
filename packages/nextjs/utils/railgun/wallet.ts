@@ -4,9 +4,6 @@ import { setEncryptionKeyFromPassword } from './encryption-key';
 
 import { Mnemonic, randomBytes } from "ethers";
 
-const mnemonic = Mnemonic.fromEntropy(randomBytes(16)).phrase.trim();
-const encryptionKey = await setEncryptionKeyFromPassword("test-password");
-
 type MapType<T> = {
   [key: string]: T;
 };
@@ -19,9 +16,16 @@ const creationBlockNumberMap: MapType<number> = {
   [NetworkName.EthereumGoerli]: 9820703,
 };
 
-const railgunWalletInfo = await createRailgunWallet(encryptionKey, mnemonic, creationBlockNumberMap);
-const id = railgunWalletInfo.id; // Store this value.
+const createTestWallet = async () => {
+  const mnemonic = Mnemonic.fromEntropy(randomBytes(16)).phrase.trim();
+  console.log("mnemonic", mnemonic);
 
-localStorage.setItem("walletId", id);
+  const encryptionKey = await setEncryptionKeyFromPassword("test-password");
+  const railgunWalletInfo = await createRailgunWallet(encryptionKey, mnemonic, creationBlockNumberMap);
+  const id = railgunWalletInfo.id; // Store this value.
+  localStorage.setItem("walletId", id);
+};
+
+export default createTestWallet;
 
 // railgunWalletInfo contains other useful information, like the wallet's RAILGUN address, i.e. '0zk987...654'
