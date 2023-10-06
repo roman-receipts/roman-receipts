@@ -59,6 +59,8 @@ const loadEngineProvider = async () => {
   return feesSerialized;
 };
 
+type Optional<T> = T | undefined;
+
 const setEngineLoggers = () => {
   const logMessage: Optional<(msg: any) => void> = console.log;
   const logError: Optional<(err: any) => void> = console.error;
