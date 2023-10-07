@@ -6,6 +6,7 @@ import keccak256 from "keccak256";
 import { writeContract, signMessage, erc20ABI, useSigner } from '@wagmi/core';
 import { useAccount, useNetwork } from "wagmi";
 import { getWalletClient } from "@wagmi/core";
+import launchWallet from "~~/utils/railgun/wallet-engine";
 
 export default function Home() {
 
@@ -16,6 +17,8 @@ export default function Home() {
     // const configApprove = await getConfigForApprove(request, chain);
     // const { hash: approveHash } = await writeContract(configApprove);
     // console.log("approveHash", approveHash);
+
+    launchWallet();
 
     const shieldSignatureMessage: string = getShieldSignatureMessage();
     const signature = await signMessage({
