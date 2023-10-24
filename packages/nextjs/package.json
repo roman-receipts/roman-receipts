@@ -17,6 +17,8 @@
     "@ant-design/icons": "^5.2.6",
     "@ethersproject/providers": "~5.7.2",
     "@heroicons/react": "~2.0.11",
+    "@railgun-community/shared-models": "5.3.6",
+    "@railgun-community/wallet": "5.5.8",
     "@rainbow-me/rainbowkit": "1.0.8",
     "@requestnetwork/advanced-logic": "^0.36.0",
     "@requestnetwork/payment-processor": "^0.38.1-next.1930",
@@ -26,6 +28,8 @@
     "@uniswap/v2-sdk": "~3.0.1",
     "blo": "~1.0.1",
     "daisyui": "~3.5.1",
+    "keccak256": "^1.0.6",
+    "level-js": "^6.1.0",
     "next": "~13.1.6",
     "nextjs-progressbar": "~0.0.16",
     "qrcode.react": "~3.1.0",
@@ -41,6 +45,10 @@
     "viem": "~1.6.7",
     "wagmi": "1.3.10",
     "zustand": "~4.1.2"
+  },
+  "resolutions": {
+    "@railgun-community/shared-models/ethers": "github:Railgun-Community/ethers.js#v6.7.6",
+    "@railgun-community/wallet/ethers": "github:Railgun-Community/ethers.js#v6.7.6"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "~4.1.1",

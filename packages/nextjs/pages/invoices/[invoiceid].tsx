@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { storageChains } from "../../config/storage-chain";
 import USDTabi from "../../generated/USDTabi.json";
 import azuroAbi from "../../generated/azuroDoubleAbi.json";
-import testabi from "../../generated/testabi.json";
+// import testabi from "../../generated/testabi.json";
 import { useEthersV5Provider } from "../../hooks/ethers/use-ethers-v5-provider";
 import { useEthersV5Signer } from "../../hooks/ethers/use-ethers-v5-signer";
 import Url from "./url";
@@ -14,19 +14,18 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { getPaymentNetworkExtension } from "@requestnetwork/payment-detection";
 import { approveErc20, hasErc20Approval, hasSufficientFunds, payRequest } from "@requestnetwork/payment-processor";
 import { RequestNetwork, Types, Utils } from "@requestnetwork/request-client.js";
+import { prepareWriteContract, sendTransaction, signMessage, writeContract } from "@wagmi/core";
 import toast from "react-hot-toast";
 import { formatUnits, parseUnits, zeroAddress } from "viem";
-import { textResolverAbi } from "viem/dist/types/constants/abis";
-import {
-  useAccount,
-  useContractEvent,
-  useContractRead,
-  useContractWrite,
-  useNetwork,
-  useSwitchNetwork,
-  useWalletClient,
-} from "wagmi";
+// import { textResolverAbi } from "viem/dist/types/constants/abis";
+import { useAccount, useContractEvent, useContractRead, useContractWrite, useNetwork, useSwitchNetwork } from "wagmi";
 import Loading from "~~/components/Loading";
+import {
+  getApproveContractConfig,
+  getErc20ShieldingTx,
+  getShieldSignatureMessage,
+} from "~~/utils/railgun/token-shielder";
+import launchWallet from "~~/utils/railgun/wallet-engine";
 
 const calculateStatus = (state: string, expectedAmount: bigint, balance: bigint) => {
   if (balance >= expectedAmount) {
@@ -405,9 +404,55 @@ export default function Home() {
     }
   }
 
-  function handlePayZk(e: React.MouseEvent<HTMLButtonElement>) {
+  async function handlePayZk(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    toast.error("Not implemented yet");
+    await launchWallet();
+
+    // ERC20 approve for railgunSmartWalletContract
+    // TODO control the allowance
+    try {
+      const { request } = await prepareWriteContract(getApproveContractConfig(requestData, chain));
+      const { hash: approveHash } = await writeContract(request);
+      console.log("hash approve", approveHash);
+    } catch (error) {
+      toast.error("Approve failed");
+      return;
+    }
+
+    // start shielding
+    let signedShieldSignMsg: string;
+    try {
+      const shieldSignatureMessage: string = getShieldSignatureMessage();
+      signedShieldSignMsg = await signMessage({
+        message: shieldSignatureMessage,
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Signature failed");
+      return;
+    }
+
+    // get tx for shielding
+    let shieldingTX;
+    try {
+      shieldingTX = await getErc20ShieldingTx(signedShieldSignMsg, chain, requestData, address);
+      console.log("tx", shieldingTX);
+    } catch (error) {
+      console.log(error);
+      toast.error("Can't create a tx");
+      return;
+    }
+
+    // const configShieldTx = await prepareSendTransaction(shieldingTX);
+
+    // send tx with our wallet (via Wagmi in this case)
+    try {
+      const { hash: shieldHash } = await sendTransaction(shieldingTX);
+      console.log("hash shield", shieldHash);
+    } catch (error) {
+      console.log(error);
+      toast.error("Tx sending failed");
+    }
   }
 
   if (loading) return <Loading />;
@@ -423,7 +468,7 @@ export default function Home() {
             <span className="font-medium">From:</span>
             <span className="hidden lg:block">{requestData?.payer?.value}</span>
             <span className="block lg:hidden">
-              {requestData?.payer?.value.slice(0, 5) + "..." + requestData?.payer?.value.slice(35, 41)}
+              {requestData?.payer?.value.slice(0, 5) + "..." + requestData?.payer?.value.slice(-6)}
             </span>
           </div>
 
@@ -431,14 +476,14 @@ export default function Home() {
             <span className="font-medium">To:</span>
             <span className="hidden lg:block">{requestData?.payee?.value}</span>
             <span className="block lg:hidden">
-              {requestData?.payee?.value.slice(0, 5) + "..." + requestData?.payee?.value.slice(35, 41)}
+              {requestData?.payee?.value.slice(0, 5) + "..." + requestData?.payee?.value.slice(-6)}
             </span>{" "}
           </div>
 
           {zkAddress && (
             <div className="flex justify-between">
               <span className="font-medium">To zk address:</span>
-              <span className="block">{zkAddress.slice(0, 5) + "..." + zkAddress.slice(35, 41)}</span>{" "}
+              <span className="block">{zkAddress.slice(0, 5) + "..." + zkAddress.slice(-6)}</span>{" "}
             </div>
           )}
         </div>
