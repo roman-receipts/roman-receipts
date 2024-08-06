@@ -21,7 +21,7 @@ Roman Receipts is a private invoicing dapp, allowing users to privately send, re
 ## Links
 
 - [TAIKAI](https://taikai.network/ethrome/hackathons/ethrome-23/projects/clnevppyk002cy901laxfge5i/idea)
-- [demo video #TODO](https://www.youtube.com/watch?v=blTLTIj5P8o)
+- [demo video](https://www.youtube.com/watch?v=blTLTIj5P8o)
 
 ## Team
 
