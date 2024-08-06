@@ -5,10 +5,8 @@ function Home() {
   const images = [
     { src: "/sponsors/Azuro.png", alt: "azuro image" },
     { src: "/sponsors/buidlguidl.jpeg", alt: "buidlguidl image" },
-    { src: "/sponsors/interface.png", alt: "interface image" },
     { src: "/sponsors/railgun.png", alt: "railgun image" },
     { src: "/sponsors/Request.png", alt: "request image" },
-    { src: "/sponsors/Talentlayer.png", alt: "talentlayer image" },
   ];
 
   return (
@@ -189,15 +187,15 @@ function Home() {
           </div>
         </div>
 
-        <iframe
-          width="650"
-          height="355"
-          src="https://www.youtube.com/embed/e_N57ZGkHKg?si=78JgeCNlxSdIcxgR"
-          title="YouTube video player"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        ></iframe>
-      </section>
+          <iframe
+            width="650"
+            height="355"
+            src="https://www.youtube.com/embed/blTLTIj5P8o"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          ></iframe>
+        </section>
 
       <section id="sponsors" className="grid pt-[60px] pb-[25px] justify-center">
         <div className="container">
@@ -206,16 +204,16 @@ function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-6 space-x-12 gap-4">
-          {images.map((image, index) => (
-            <div key={index} className="relative">
-              <Image width={60} height={6} src={image.src} alt={image.alt} className="w-full" />
-            </div>
-          ))}
-        </div>
-      </section>
-    </main>
-    // </div>
+          <div className="grid grid-cols-4 space-x-12 gap-4">
+            {images.map((image, index) => (
+              <div key={index} className="relative">
+                <Image width={60} height={6} src={image.src} alt={image.alt} className="w-full" />
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
 

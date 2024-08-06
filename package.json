@@ -38,6 +38,8 @@
   },
   "packageManager": "yarn@3.2.3",
   "dependencies": {
+    "ethers": "github:Railgun-Community/ethers.js#v6.7.6",
+    "keccak256": "^1.0.6",
     "node-gyp": "^9.4.0"
   }
 }
